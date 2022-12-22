@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/restUp/static/css/main.ebb5af2b.css",
+    "main.js": "/restUp/static/js/main.6a67ae39.js",
+    "index.html": "/restUp/index.html",
+    "main.ebb5af2b.css.map": "/restUp/static/css/main.ebb5af2b.css.map",
+    "main.6a67ae39.js.map": "/restUp/static/js/main.6a67ae39.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ebb5af2b.css",
+    "static/js/main.6a67ae39.js"
+  ]
+}
