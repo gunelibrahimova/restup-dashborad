@@ -1,0 +1,40 @@
+body {
+  position: relative;
+}
+
+.loader {
+  width: 100%;
+  height: 100%;
+  // height: 100vh;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  background: rgba(1, 1, 1, 0.182);
+  z-index: 10000;
+  // transition: 1s ease;
+
+  transition: 0.2s ease-in 0.2s;
+
+  .load {
+    margin-top: 80vh;
+    width: 70px;
+    height: 70px;
+    border-top: 4px solid #0324fc;
+    border-right: 4px solid transparent;
+    border-radius: 50%;
+    animation: 1s spin linear infinite;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

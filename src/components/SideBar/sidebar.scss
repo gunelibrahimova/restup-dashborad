@@ -1,0 +1,139 @@
+#sideBar {
+    background-color: #25252e;
+    height: 100vh;
+    position: fixed;
+    // z-index: 9999;
+
+    ul {
+        margin: 0;
+        padding: 0;
+
+        .product {
+            list-style: none;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            font-size: 25px;
+            font-family: "DM San";
+            margin-top: 20px;
+            transition: 0.3s ease-in-out;
+            cursor: pointer;
+
+            a {
+                text-decoration: none;
+                color: black;
+                background-color: white;
+                border-radius: 10px;
+                padding: 10px 90px;
+                width: 100%;
+                transition: 0.3s ease-in-out;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: transparent;
+                    color: white;
+                }
+            }
+        }
+
+        .dashboard {
+            text-align: center;
+            padding-top: 20px;
+            list-style: none;
+            border-bottom: 1px solid #fff;
+            color: white;
+            cursor: pointer;
+
+            a {
+                color: white;
+                text-decoration: none;
+                font-size: 40px;
+                font-family: "Crimson Text", serif;
+                cursor: pointer;
+            }
+        }
+
+        .logout {
+            list-style: none;
+            margin: 0;
+            padding: 10px;
+            text-align: center;
+            font-size: 25px;
+            font-family: "DM San";
+            margin-top: 10px;
+            transition: 0.3s ease-in-out;
+            cursor: pointer;
+
+            a {
+                text-decoration: none;
+                color: #fff;
+                background-color: #eb89a0;
+                border-radius: 10px;
+                padding: 10px 100px;
+                transition: 0.3s ease-in-out;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: transparent;
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (max-width: 576px) {
+    #sideBar {
+        background-color: #25252e;
+        // height: 100vh;
+        position: static;
+        width: 100%;
+        ul{
+            .product{
+                a{
+                    width: 80%;
+                }
+            }
+        }
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 576px) and (max-width: 768px) {
+    #sideBar {
+        background-color: #25252e;
+        // height: 100vh;
+        position: static;
+        ul{
+            .product{
+                a{
+                    width: 80%;
+                }
+            }
+        }
+    }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 768px) and (max-width: 992px) {
+    #sideBar {
+        background-color: #25252e;
+        // height: 100vh;
+        // position: fixed;
+        ul{
+            .product{
+                padding: 10px;
+                a{
+                    width: 80%;
+                }
+            }
+        }
+    }
+}
+
+// X-Large devices (large desktops, 1200px and up)
+@media (max-width: 1200px) {}
+
+// XX-Large devices (larger desktops, 1400px and up)
+@media (max-width: 1400px) {}
