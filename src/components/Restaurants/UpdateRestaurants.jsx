@@ -42,7 +42,6 @@ const UpdateRestaurants = () => {
   const [location, setLocation] = useState(DefaultLocation);
   const [zoom, setZoom] = useState(DefaultZoom);
   const [age, setAge] = React.useState('');
-  const [menuUrls, setMenuUrls] = useState([]);
   const [thumbImage, setThumbImage] = useState("")
 
 
@@ -84,7 +83,7 @@ const UpdateRestaurants = () => {
     const menuRef = ref(storage, `menu/${file.name}`);
     uploadBytes(menuRef, file).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
-        setMenuUrls(() => [url]);
+       setMenu(url)
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -96,16 +95,6 @@ const UpdateRestaurants = () => {
     });
   };
 
-
-  useEffect(() => {
-    listAll(menuListRef).then((response) => {
-      response.items.forEach((item) => {
-        getDownloadURL(item).then((url) => {
-          setMenuUrls(() => [url]);
-        });
-      });
-    });
-  }, []);
 
   //for addorRemoveInput
   const phoneNumberChange = (e, index) => {
@@ -162,7 +151,7 @@ const UpdateRestaurants = () => {
   };
 
   const addData = async () => {
-    const docRef = doc(db, "restaurantes", locationn.state.id);
+    const docRef = doc(db, "restaurants", locationn.state.id);
     const docSnap = await getDoc(docRef)
     const data = docSnap.data()
 
@@ -171,15 +160,15 @@ const UpdateRestaurants = () => {
       address: data.address,
       name: data.name,
       phoneNumbers: data.phoneNumbers,
-      avgPrice: parseFloat(data.avgPrice),
+      avgPrice: data.avgPrice,
       mainCuisine: data.mainCuisine,
       workingStartsAt: data.workingStartsAt,
       workingEndsAt: data.workingEndsAt,
       bookingStartsAt: data.bookingStartsAt,
       bookingEndsAt: data.bookingEndsAt,
       socialNetworkAccount: data.socialNetworkAccount,
-      smokingRooms: data.smokingRooms,
-      nonSmokingRooms: data.nonSmokingRooms,
+      smokingRooms: parseInt(data.smokingRooms),
+      nonSmokingRooms: parseInt(data.nonSmokingRooms),
       description: data.description,
       bookingAvailable: data.bookingAvailable,
       maxAllowedGuests: parseFloat(data.maxAllowedGuests),
@@ -220,7 +209,7 @@ const UpdateRestaurants = () => {
 
   const updateUser = async () => {
     try {
-      const docRef = doc(db, "restaurantes", locationn.state.id);
+      const docRef = doc(db, "restaurants", locationn.state.id);
       const docSnap = await getDoc(docRef)
       const data = docSnap.data()
 
@@ -228,15 +217,15 @@ const UpdateRestaurants = () => {
         address: address,
         name: restaurantName,
         phoneNumbers: phoneNumbers,
-        avgPrice: parseFloat(avgPrice),
+        avgPrice: avgPrice,
         mainCuisine: mainCuisine,
         workingStartsAt: workingStartsAt,
         workingEndsAt: workingEndsAt,
         bookingStartsAt: bookingStartsAt,
         bookingEndsAt: bookingEndsAt,
         socialNetworkAccount: socialNetworkAccount,
-        smokingRooms: smokingRooms,
-        nonSmokingRooms: nonSmokingRooms,
+        smokingRooms: parseInt(smokingRooms),
+        nonSmokingRooms: parseInt(nonSmokingRooms),
         description: description,
         bookingAvailable: bookingAvailable,
         maxAllowedGuests: parseFloat(maxAllowedGuests),
@@ -247,7 +236,6 @@ const UpdateRestaurants = () => {
         roomTypes: roomTypes,
         thumbImage: thumbImage,
         images: images,
-        menuUrls: menuUrls
       };
 
       await updateDoc(docRef, newFields)

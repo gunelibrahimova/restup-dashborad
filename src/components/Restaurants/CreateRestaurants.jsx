@@ -43,7 +43,6 @@ const CreateRestaurants = () => {
     const [zoom, setZoom] = useState(DefaultZoom);
     const [age, setAge] = React.useState('');
     const maxNumber = 69;
-    const [menuUrls, setMenuUrls] = useState([]);
     const [thumbImage, setThumbImage] = useState("")
 
     //for upload image
@@ -83,7 +82,7 @@ const CreateRestaurants = () => {
         const menuRef = ref(storage, `menu/${file.name}`);
         uploadBytes(menuRef, file).then((snapshot) => {
             getDownloadURL(snapshot.ref).then((url) => {
-                setMenuUrls(() => [url]);
+                setMenu(url);
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -95,15 +94,7 @@ const CreateRestaurants = () => {
         });
     };
 
-    useEffect(() => {
-        listAll(menuListRef).then((response) => {
-            response.items.forEach((item) => {
-                getDownloadURL(item).then((url) => {
-                    setMenuUrls(() => [url]);
-                });
-            });
-        });
-    }, []);
+
 
     //for addorRemoveInput
     const phoneNumberChange = (e, index) => {
@@ -162,19 +153,19 @@ const CreateRestaurants = () => {
     const Save = async () => {
         try {
             console.log(images);
-            const docRef = await addDoc(collection(db, "restaurantes"), {
+            const docRef = await addDoc(collection(db, "restaurants"), {
                 name: restaurantName,
                 phoneNumbers: phoneNumbers,
                 address: address,
-                avgPrice: parseFloat(avgPrice),
+                avgPrice: avgPrice,
                 mainCuisine: mainCuisine,
                 workingStartsAt: workingStartsAt,
                 workingEndsAt: endTime,
                 bookingStartsAt: reservStartTime,
                 bookingEndsAt: reservEndTime,
                 socialNetworkAccount: socialNetworkAccount,
-                smokingRooms: smokingRooms,
-                nonSmokingRooms: nonSmokingRooms,
+                smokingRooms: parseInt(smokingRooms),
+                nonSmokingRooms: parseInt(nonSmokingRooms),
                 description: description,
                 bookingAvailable: bookingAvailable,
                 maxAllowedGuests: parseFloat(maxAllowedGuests),
@@ -184,8 +175,7 @@ const CreateRestaurants = () => {
                 location: new GeoPoint(lat, lng),
                 roomTypes: roomTypes,
                 thumbImage: thumbImage,
-                images: images,
-                menuUrls: menuUrls
+                images: images
             });
 
             Swal.fire({
