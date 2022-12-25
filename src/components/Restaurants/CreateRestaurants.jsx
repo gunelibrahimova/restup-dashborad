@@ -1,5 +1,4 @@
-import { Box, FormControl, FormLabel, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './restaurants.scss'
 import ImageUploading from 'react-images-uploading';
 import MapPicker from 'react-google-map-picker';
@@ -9,9 +8,20 @@ import { storage } from "../../config/firebase"
 import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage"
 import { v4 } from 'uuid';
 import Swal from 'sweetalert2'
+import { Box, FormControl, FormLabel, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material';
+import { auth } from '../../config/firebase'
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
+
+// const functions = require("firebase-functions");
+// const admin = require('firebase-admin');
+// admin.initializeApp();
+
+
 
 const DefaultLocation = { lat: 40.4093, lng: 49.8671 };
 const DefaultZoom = 10;
+
 
 const CreateRestaurants = () => {
     const [restaurantName, setRestaurantName] = useState("")
@@ -44,6 +54,15 @@ const CreateRestaurants = () => {
     const [age, setAge] = React.useState('');
     const maxNumber = 69;
     const [thumbImage, setThumbImage] = useState("")
+
+
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
+
+    const signUp = e => {
+
+    }
+
 
     //for upload image
     const uploadThumbImage = (image) => {
@@ -93,8 +112,6 @@ const CreateRestaurants = () => {
             });
         });
     };
-
-
 
     //for addorRemoveInput
     const phoneNumberChange = (e, index) => {
@@ -150,10 +167,29 @@ const CreateRestaurants = () => {
         setAge(event.target.value)
     };
 
-    const Save = async () => {
+    const Save = async (e) => {
         try {
-            console.log(images);
-            const docRef = await addDoc(collection(db, "restaurants"), {
+            // await admin.auth().createUser({
+            //     email: username+'@gmail.com',
+            //     emailVerified: true,
+            //     password: password,
+            //     displayName: restaurantName,
+            //     disabled: false
+            //   }).then((value) => {
+            //     console.log(value);
+            //   })
+
+            e.preventDefault();
+            createUserWithEmailAndPassword(auth,
+                emailRef.current.value, passwordRef.current.value
+            ).then(user => {
+                console.log(user)
+            }).catch(err => {
+                console.log(err)
+            })
+
+
+            const docRef = await addDoc(collection(db, "restaurantes"), {
                 name: restaurantName,
                 phoneNumbers: phoneNumbers,
                 address: address,
@@ -169,8 +205,6 @@ const CreateRestaurants = () => {
                 description: description,
                 bookingAvailable: bookingAvailable,
                 maxAllowedGuests: parseFloat(maxAllowedGuests),
-                username: username,
-                password: password,
                 menu: menu,
                 location: new GeoPoint(lat, lng),
                 roomTypes: roomTypes,
@@ -185,7 +219,8 @@ const CreateRestaurants = () => {
                 showConfirmButton: false,
                 timer: 1500
             })
-        } catch (err) {
+        }
+        catch (err) {
             console.log(err)
             Swal.fire({
                 icon: 'error',
@@ -193,6 +228,23 @@ const CreateRestaurants = () => {
                 text: 'Xəta baş verdi',
             })
         }
+
+        // functions.https.onCall(async (data, context) => {
+        //     try {
+        //       const user = await admin.auth().createUser({
+        //         email: username,
+        //         emailVerified: true,
+        //         password: password,
+        //         displayName: restaurantName,
+        //         disabled: false,
+        //       });
+        //       return {
+        //         response: user
+        //       };
+        //   } catch (error) {
+        //       throw new functions.https.HttpsError('failed to create a user');
+        //     }
+        //   });
     }
     Date.prototype.addHours = function (h) {
         this.setHours(this.getHours() + h);
@@ -494,10 +546,10 @@ const CreateRestaurants = () => {
             <div className="nameAndPassword">
                 <div className="row">
                     <div className="col-lg-6">
-                        <TextField fullWidth id="outlined-basic" label="User name" className='mb-4' variant="outlined" onChange={(e) => setUserName(e.target.value)} />
+                        <TextField fullWidth id="outlined-basic" label="User name" className='mb-4' variant="outlined" inputRef={emailRef} />
                     </div>
                     <div className="col-lg-6">
-                        <TextField fullWidth id="outlined-basic" label="Password" className='mb-4' variant="outlined" onChange={(e) => setPassword(e.target.value)} />
+                        <TextField fullWidth id="outlined-basic" label="Password" className='mb-4' variant="outlined" inputRef={passwordRef} />
                     </div>
                 </div>
             </div>

@@ -31,8 +31,6 @@ const UpdateRestaurants = () => {
   const [description, setDescription] = useState("")
   const [bookingAvailable, setBookingAvailable] = useState(true)
   const [maxAllowedGuests, setMaxAllowedGuests] = useState("")
-  const [username, setUserName] = useState("")
-  const [password, setPassword] = useState("")
   const [lat, setLat] = useState(DefaultLocation.lat)
   const [lng, setLng] = useState(DefaultLocation.lng)
   const [phoneNumbers, setPhoneNumbers] = useState([{ mobile: "" }]);
@@ -151,7 +149,7 @@ const UpdateRestaurants = () => {
   };
 
   const addData = async () => {
-    const docRef = doc(db, "restaurants", locationn.state.id);
+    const docRef = doc(db, "restaurantes", locationn.state.id);
     const docSnap = await getDoc(docRef)
     const data = docSnap.data()
 
@@ -172,8 +170,6 @@ const UpdateRestaurants = () => {
       description: data.description,
       bookingAvailable: data.bookingAvailable,
       maxAllowedGuests: parseFloat(data.maxAllowedGuests),
-      username: data.username,
-      password: data.password,
       menu: data.menu,
       location: new GeoPoint(data.location.latitude, data.location.longitude),
       roomTypes: data.roomTypes,
@@ -195,8 +191,6 @@ const UpdateRestaurants = () => {
     setDescription(newFields.description)
     setBookingAvailable(newFields.bookingAvailable)
     setMaxAllowedGuests(newFields.maxAllowedGuests)
-    setUserName(newFields.username)
-    setPassword(newFields.password)
     setMenu(newFields.menu)
     setPhoneNumbers(newFields.phoneNumbers)
     setRoomTypes(newFields.roomTypes)
@@ -209,7 +203,7 @@ const UpdateRestaurants = () => {
 
   const updateUser = async () => {
     try {
-      const docRef = doc(db, "restaurants", locationn.state.id);
+      const docRef = doc(db, "restaurantes", locationn.state.id);
       const docSnap = await getDoc(docRef)
       const data = docSnap.data()
 
@@ -229,8 +223,6 @@ const UpdateRestaurants = () => {
         description: description,
         bookingAvailable: bookingAvailable,
         maxAllowedGuests: parseFloat(maxAllowedGuests),
-        username: username,
-        password: password,
         menu: menu,
         location: new GeoPoint(location.lat, location.lng),
         roomTypes: roomTypes,
@@ -529,16 +521,6 @@ const UpdateRestaurants = () => {
           </div>
         </div>
       ))}
-      <div className="nameAndPassword">
-        <div className="row">
-          <div className="col-lg-6">
-            <TextField fullWidth id="outlined-basic" label="User name" className='mb-4' value={username} variant="outlined" onChange={(e) => setUserName(e.target.value)} />
-          </div>
-          <div className="col-lg-6">
-            <TextField fullWidth id="outlined-basic" label="Password" className='mb-4' value={password} variant="outlined" onChange={(e) => setPassword(e.target.value)} />
-          </div>
-        </div>
-      </div>
 
       <button onClick={handleResetLocation}>Reset Location</button>
       <label>Latitute:</label><input type='text' value={location.lat} disabled />

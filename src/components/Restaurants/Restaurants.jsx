@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 const Restaurants = () => {
 
     const [restaurantes, setRestaurantes] = useState([]);
-    const restaurantCollectionRef = collection(db, "restaurants");
+    const restaurantCollectionRef = collection(db, "restaurantes");
 
     const deleteRestaurant = async (id) => {
         Swal.fire({
@@ -26,7 +26,7 @@ const Restaurants = () => {
                     'Your file has been deleted.',
                     'success'
                 )
-                const userDoc = doc(db, "restaurants", id);
+                const userDoc = doc(db, "restaurantes", id);
                  deleteDoc(userDoc);
             }
         })
