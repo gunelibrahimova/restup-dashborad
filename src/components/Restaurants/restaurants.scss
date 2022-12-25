@@ -11,7 +11,7 @@
 
 #CreateRestaurants {
     padding: 50px;
-    width: 90%;
+    width: 100%;
     margin-bottom: 200px;
 
     .workTime{
@@ -151,7 +151,7 @@
 
 #UpdateRestaurants {
     padding: 50px;
-    width: 90%;
+    width: 100%;
     margin-bottom: 200px;
 
     .workTime{
@@ -294,12 +294,31 @@
 
 // Small devices (landscape phones, 576px and up)
 @media (max-width: 576px) {
+    #restaurant{
+        .card{
+            margin-bottom: 20px;
+        }
+    }
+    #CreateRestaurants{
+        .submit{
+            padding: 10px 70px ;
+        }
+        .workTime{
+            margin-bottom: 30px;
+            .startTime{
+                margin-bottom: 20px;
+            }
+        }
+    }
     #UpdateRestaurants{
         // padding: 10px;
         .profilePhoto {
             img{
                 width:200px;    
             }
+        }
+        .submit{
+            padding: 10px 70px ;
         }
         .workTime{
             margin-bottom: 30px;
@@ -329,7 +348,18 @@
         }
     }
     #UpdateRestaurants{
-        padding-left: 90px;
+        margin: auto;
+        width: 90%;
+        .workTime{
+            margin-bottom: 30px;
+            .startTime{
+                margin-bottom: 20px;
+            }
+        }
+    }
+    #CreateRestaurants{
+        margin: auto;
+        width: 90%;
         .workTime{
             margin-bottom: 30px;
             .startTime{

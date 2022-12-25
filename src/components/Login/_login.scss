@@ -1,6 +1,7 @@
-#login{
+#login {
     margin-top: 150px;
-    .well{
+
+    .well {
         border: 1px solid #ddd;
         background: 0 0;
         border-radius: 0;
@@ -11,9 +12,11 @@
         margin-bottom: 20px;
         margin: auto;
         width: 50%;
-        .icon{
+
+        .icon {
             text-align: center;
-            i{
+
+            i {
                 background-color: #0D6EFD;
                 padding: 15px;
                 font-size: 20px;
@@ -21,20 +24,25 @@
                 color: white;
             }
         }
-        h2{
+
+        h2 {
             text-align: center;
         }
-        p{
+
+        p {
             font-size: 15px;
             margin: 0 0 20px;
-            strong{
+
+            strong {
                 font-weight: 500;
             }
         }
-        .comment-submit{
+
+        .comment-submit {
             margin-top: 20px;
             margin-bottom: 20px;
-            .cart-btn{
+
+            .cart-btn {
                 border-radius: 8px;
                 background: #0D6EFD;
                 border: 0;
@@ -46,7 +54,8 @@
                 font-weight: 400;
             }
         }
-        input{
+
+        input {
             font-size: 14px;
             box-shadow: none;
             height: 40px;
@@ -57,9 +66,11 @@
             padding: 6px 12px;
             line-height: 1.42857143;
         }
-        .button{
+
+        .button {
             text-align: center;
-            button{
+
+            button {
                 border: none;
                 background-color: #0D6EFD;
                 margin: 15px 0px;
@@ -72,3 +83,23 @@
         }
     }
 }
+
+// Small devices (landscape phones, 576px and up)
+@media (max-width: 576px) {
+    #login {
+        .well{
+            width: 90%;
+        }
+
+    }
+
+    // Medium devices (tablets, 768px and up)
+    @media (min-width: 576px) and (max-width: 768px) {}
+
+    // Large devices (desktops, 992px and up)
+    @media (min-width: 768px) and (max-width: 992px) {}
+
+    // X-Large devices (large desktops, 1200px and up)
+    @media (min-width: 992px) and (max-width: 1200px) {
+
+    }}
