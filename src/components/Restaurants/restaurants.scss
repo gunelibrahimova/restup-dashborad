@@ -300,6 +300,11 @@
         }
     }
     #CreateRestaurants{
+        .profilePhoto {
+            img{
+                width:200px;    
+            }
+        }
         .submit{
             padding: 10px 70px ;
         }
