@@ -12,13 +12,6 @@ import { Box, FormControl, FormLabel, InputLabel, MenuItem, Select, Switch, Text
 import { auth } from '../../config/firebase'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-
-// const functions = require("firebase-functions");
-// const admin = require('firebase-admin');
-// admin.initializeApp();
-
-
-
 const DefaultLocation = { lat: 40.4093, lng: 49.8671 };
 const DefaultZoom = 10;
 
@@ -189,7 +182,7 @@ const CreateRestaurants = () => {
             })
 
 
-            const docRef = await addDoc(collection(db, "restaurantes"), {
+            const docRef = await addDoc(collection(db, "restaurants"), {
                 name: restaurantName,
                 phoneNumbers: phoneNumbers,
                 address: address,
