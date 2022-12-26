@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/restup-dashborad/static/css/main.ebb5af2b.css",
-    "main.js": "/restup-dashborad/static/js/main.cdb4adc1.js",
+    "main.css": "/restup-dashborad/static/css/main.2584c68e.css",
+    "main.js": "/restup-dashborad/static/js/main.5b26e386.js",
     "index.html": "/restup-dashborad/index.html",
-    "main.ebb5af2b.css.map": "/restup-dashborad/static/css/main.ebb5af2b.css.map",
-    "main.cdb4adc1.js.map": "/restup-dashborad/static/js/main.cdb4adc1.js.map"
+    "main.2584c68e.css.map": "/restup-dashborad/static/css/main.2584c68e.css.map",
+    "main.5b26e386.js.map": "/restup-dashborad/static/js/main.5b26e386.js.map"
   },
   "entrypoints": [
-    "static/css/main.ebb5af2b.css",
-    "static/js/main.cdb4adc1.js"
+    "static/css/main.2584c68e.css",
+    "static/js/main.5b26e386.js"
   ]
 }
