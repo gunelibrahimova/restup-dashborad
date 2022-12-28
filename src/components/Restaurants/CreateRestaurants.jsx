@@ -155,29 +155,18 @@ const CreateRestaurants = () => {
     const changeMenuInput = (event) => {
         setAge(event.target.value)
     };
-
     const Save = async (e) => {
         try {
-            // await admin.auth().createUser({
-            //     email: username+'@gmail.com',
-            //     emailVerified: true,
-            //     password: password,
-            //     displayName: restaurantName,
-            //     disabled: false
-            //   }).then((value) => {
-            //     console.log(value);
-            //   })
 
+            const user = auth.currentUser;
             e.preventDefault();
             createUserWithEmailAndPassword(auth,
-                emailRef.current.value + "@gmail.com", passwordRef.current.value
+                emailRef.current.value + "@gmail.com", passwordRef.current.value,
             ).then(user => {
-                console.log(user)
+                console.log(user);
             }).catch(err => {
                 console.log(err)
             })
-
-
             const docRef = await addDoc(collection(db, "restaurants"), {
                 name: restaurantName,
                 phoneNumbers: phoneNumbers,
@@ -198,7 +187,8 @@ const CreateRestaurants = () => {
                 location: new GeoPoint(lat, lng),
                 roomTypes: roomTypes,
                 thumbImage: thumbImage,
-                images: images
+                images: images,
+                userId: user.uid
             });
 
             Swal.fire({
@@ -208,6 +198,7 @@ const CreateRestaurants = () => {
                 showConfirmButton: false,
                 timer: 1500
             })
+
         }
         catch (err) {
             console.log(err)
@@ -217,23 +208,6 @@ const CreateRestaurants = () => {
                 text: 'Xəta baş verdi',
             })
         }
-
-        // functions.https.onCall(async (data, context) => {
-        //     try {
-        //       const user = await admin.auth().createUser({
-        //         email: username,
-        //         emailVerified: true,
-        //         password: password,
-        //         displayName: restaurantName,
-        //         disabled: false,
-        //       });
-        //       return {
-        //         response: user
-        //       };
-        //   } catch (error) {
-        //       throw new functions.https.HttpsError('failed to create a user');
-        //     }
-        //   });
     }
     Date.prototype.addHours = function (h) {
         this.setHours(this.getHours() + h);

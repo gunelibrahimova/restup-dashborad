@@ -53,7 +53,6 @@ const Restaurants = () => {
                     {
                         restaurantes &&
                         restaurantes.map((restaurant) => {
-                            console.log(restaurant)
                             return (
                                 <div className="col-lg-4 ">
                                     <div className="card">
