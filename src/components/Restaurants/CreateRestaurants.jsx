@@ -158,45 +158,47 @@ const CreateRestaurants = () => {
     const Save = async (e) => {
         try {
 
-            const user = auth.currentUser;
-            e.preventDefault();
             createUserWithEmailAndPassword(auth,
                 emailRef.current.value + "@gmail.com", passwordRef.current.value,
             ).then(user => {
-                console.log(user);
+                console.log(user.user.uid);
+                addDoc(collection(db, "restaurants"), {
+                    name: restaurantName,
+                    phoneNumbers: phoneNumbers,
+                    address: address,
+                    avgPrice: avgPrice,
+                    mainCuisine: mainCuisine,
+                    workingStartsAt: workingStartsAt,
+                    workingEndsAt: endTime,
+                    bookingStartsAt: reservStartTime,
+                    bookingEndsAt: reservEndTime,
+                    socialNetworkAccount: socialNetworkAccount,
+                    smokingRooms: parseInt(smokingRooms),
+                    nonSmokingRooms: parseInt(nonSmokingRooms),
+                    description: description,
+                    bookingAvailable: bookingAvailable,
+                    maxAllowedGuests: parseFloat(maxAllowedGuests),
+                    menu: menu,
+                    location: new GeoPoint(lat, lng),
+                    roomTypes: roomTypes,
+                    thumbImage: thumbImage,
+                    images: images,
+                    userId:user.user.uid
+                });
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Məlumat əlavə olundu',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             }).catch(err => {
                 console.log(err)
-            })
-            const docRef = await addDoc(collection(db, "restaurants"), {
-                name: restaurantName,
-                phoneNumbers: phoneNumbers,
-                address: address,
-                avgPrice: avgPrice,
-                mainCuisine: mainCuisine,
-                workingStartsAt: workingStartsAt,
-                workingEndsAt: endTime,
-                bookingStartsAt: reservStartTime,
-                bookingEndsAt: reservEndTime,
-                socialNetworkAccount: socialNetworkAccount,
-                smokingRooms: parseInt(smokingRooms),
-                nonSmokingRooms: parseInt(nonSmokingRooms),
-                description: description,
-                bookingAvailable: bookingAvailable,
-                maxAllowedGuests: parseFloat(maxAllowedGuests),
-                menu: menu,
-                location: new GeoPoint(lat, lng),
-                roomTypes: roomTypes,
-                thumbImage: thumbImage,
-                images: images,
-                userId: user.uid
-            });
-
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Məlumat əlavə olundu',
-                showConfirmButton: false,
-                timer: 1500
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Xəta baş verdi',
+                })
             })
 
         }
