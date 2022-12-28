@@ -52,10 +52,6 @@ const CreateRestaurants = () => {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
 
-    const signUp = e => {
-
-    }
-
 
     //for upload image
     const uploadThumbImage = (image) => {
@@ -174,7 +170,7 @@ const CreateRestaurants = () => {
 
             e.preventDefault();
             createUserWithEmailAndPassword(auth,
-                emailRef.current.value, passwordRef.current.value
+                emailRef.current.value + "@gmail.com", passwordRef.current.value
             ).then(user => {
                 console.log(user)
             }).catch(err => {

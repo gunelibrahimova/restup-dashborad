@@ -11,7 +11,7 @@ const MyRouter = () => {
   return (
     <div>
         <Routes>
-            <Route path="/" element={<Home/>}/>
+            {/* <Route path="/" element={<Home/>}/> */}
             <Route path="/restaurants" element={<Restaurants/>}/>
             <Route path='/restaurants/create' element={<CreateRestaurants />}/>
             <Route path='/restaurants/update' element={<UpdateRestaurants />}/>
