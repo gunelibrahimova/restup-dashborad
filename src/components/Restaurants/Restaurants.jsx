@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 const Restaurants = () => {
 
     const [restaurantes, setRestaurantes] = useState([]);
-    const restaurantCollectionRef = collection(db, "restaurants");
+    const restaurantCollectionRef = collection(db, "restaurantes");
 
     const deleteRestaurant = async (id) => {
         Swal.fire({
@@ -18,7 +18,7 @@ const Restaurants = () => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sil',
-            cancelButtonText : 'Ləğv et'
+            cancelButtonText: 'Ləğv et'
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire(
@@ -26,8 +26,8 @@ const Restaurants = () => {
                     'Your file has been deleted.',
                     'success'
                 )
-                const userDoc = doc(db, "restaurants", id);
-                 deleteDoc(userDoc);
+                const userDoc = doc(db, "restaurantes", id);
+                deleteDoc(userDoc);
             }
         })
 
@@ -43,11 +43,7 @@ const Restaurants = () => {
     }, [restaurantes]);
     return (
         <div id='restaurant'>
-             <div className="col-lg-4 my-4">
-                    <Link to="/restaurants/create">
-                        <button className='btn btn-outline-success'>Create</button>
-                    </Link>
-                </div>
+
             <div className='container my-5'>
                 <div className="row">
                     {
@@ -89,7 +85,12 @@ const Restaurants = () => {
                     }
 
                 </div>
-               
+
+            </div>
+            <div className="col-lg-4 my-4">
+                <Link to="/restaurants/create">
+                    <button className='btn btn-outline-success createButton'>Create</button>
+                </Link>
             </div>
         </div>
     )

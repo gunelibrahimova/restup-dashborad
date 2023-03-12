@@ -4,13 +4,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 var firebaseConfig = {
-  apiKey: "AIzaSyAkpCdayFL9fFwjqEG2DaSGYA0Vz73EVog",
-  authDomain: "restup-94cc2.firebaseapp.com",
-  projectId: "restup-94cc2",
-  storageBucket: "restup-94cc2.appspot.com",
-  messagingSenderId: "663898947270",
-  appId: "1:663898947270:web:0191c5fb9844b7417061c7",
-  measurementId: "G-4ZSLGGM3PY"
+  apiKey: "AIzaSyBYxg5Noc_pHgMTWzutnWsYXxwqnIpRf_k",
+     authDomain: "restup-c65a4.firebaseapp.com",
+     projectId: "restup-c65a4",
+     storageBucket: "restup-c65a4.appspot.com",
+     messagingSenderId: "855533308147",
+     appId: "1:855533308147:web:d84d86e5eb36f4c08b8f86",
+     measurementId: "G-14NYM2W65H"
 
 };
 // Initialize Firebase

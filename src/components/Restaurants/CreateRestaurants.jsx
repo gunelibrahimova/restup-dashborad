@@ -8,12 +8,15 @@ import { storage } from "../../config/firebase"
 import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage"
 import { v4 } from 'uuid';
 import Swal from 'sweetalert2'
-import { Box, FormControl, FormLabel, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material';
-import { auth } from '../../config/firebase'
+import { Box, FormControl, FormLabel, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, Switch, TextField } from '@mui/material';
+import { auth } from '../../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+
 
 const DefaultLocation = { lat: 40.4093, lng: 49.8671 };
 const DefaultZoom = 10;
+
+
 
 
 const CreateRestaurants = () => {
@@ -21,33 +24,58 @@ const CreateRestaurants = () => {
     const [address, setAddress] = useState("")
     const [avgPrice, setAvaragePrice] = useState("")
     const [mainCuisine, setMainCuisine] = useState("")
+    const [category, setCategory] = useState("")
     const [workingStartsAt, setWorkingStartsAt] = useState(new Date())
     const [endTime, setEndTime] = useState(new Date())
     const [reservStartTime, setReservStartTime] = useState(new Date())
     const [reservEndTime, setReservEndTime] = useState(new Date())
     const [socialNetworkAccount, setSocialNetworkAccount] = useState("")
-    const [smokingRooms, setSmokingRooms] = useState("")
-    const [nonSmokingRooms, setNonSmokingRooms] = useState("")
     const [description, setDescription] = useState("")
     const [bookingAvailable, setBookingAvailable] = useState(true)
     const [maxAllowedGuests, setMaxAllowedGuests] = useState("")
-    const [username, setUserName] = useState("")
-    const [password, setPassword] = useState("")
     const [defaultLocation, setDefaultLocation] = useState(DefaultLocation);
     const [lat, setLat] = useState(defaultLocation.lat)
     const [lng, setLng] = useState(defaultLocation.lng)
     const [phoneNumbers, setPhoneNumbers] = useState([{ mobile: "" }]);
-    const [roomTypes, setRoomTypes] = useState([{ room: "" }]);
+    // const [room, setRoom] = useState("")
+    // const [roomCount, setRoomCount] = useState("")
+    // const [roomTypes, setRoomTypes] = useState(["", ""]);
+    const [roomTypes, setRoomTypes] = useState([
+        { room: "", capacity: "" },
+    ]);
     const [images, setImages] = useState([]);
     const [menu, setMenu] = useState("");
-    const [photos, setPhotos] = React.useState([]);
-    const [singleImages, setSingleImages] = React.useState([]);
     const [location, setLocation] = useState(defaultLocation);
     const [zoom, setZoom] = useState(DefaultZoom);
     const [age, setAge] = React.useState('');
-    const maxNumber = 69;
     const [thumbImage, setThumbImage] = useState("")
 
+    const roomChange = (e, index) => {
+        const list = [...roomTypes];
+        console.log(roomTypes[0]);
+        list[index].room = e.target.value
+        setRoomTypes(list);
+
+    };
+
+    const roomRemove = (index) => {
+        const list = [...roomTypes];
+        list.splice(index, 2);
+        setRoomTypes(list);
+
+
+    };
+
+    const roomAdd = () => {
+        setRoomTypes([...roomTypes, { room: "", capacity: "" }]);
+
+    };
+
+    const capacityChange = (event, index) => {
+        const newRoomTypes = [...roomTypes];
+        newRoomTypes[index].capacity = event.target.value;
+        setRoomTypes(newRoomTypes);
+    }
 
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
@@ -77,7 +105,6 @@ const CreateRestaurants = () => {
             })
         }
     };
-
 
     const removeImagesAtIndex = (index) => {
         images.splice(index, 1);
@@ -120,22 +147,7 @@ const CreateRestaurants = () => {
         setPhoneNumbers([...phoneNumbers, ""]);
     };
 
-    const roomChange = (e, index) => {
-        const { value } = e.target;
-        const list = [...roomTypes];
-        list[index] = value;
-        setRoomTypes(list);
-    };
 
-    const roomRemove = (index) => {
-        const list = [...roomTypes];
-        list.splice(index, 1);
-        setRoomTypes(list);
-    };
-
-    const roomAdd = () => {
-        setRoomTypes([...roomTypes, ""]);
-    };
 
     function handleChangeLocation(lat, lng) {
         setLocation({ lat: lat, lng: lng });
@@ -157,33 +169,39 @@ const CreateRestaurants = () => {
     };
     const Save = async (e) => {
         try {
-
             createUserWithEmailAndPassword(auth,
                 emailRef.current.value + "@gmail.com", passwordRef.current.value,
             ).then(user => {
-                console.log(user.user.uid);
-                addDoc(collection(db, "restaurants"), {
+                console.log('user : ', user);
+                const roomTypesData = roomTypes.map(rooms => {
+                    return {
+                      room: rooms.room,
+                      capacity: rooms.capacity
+                    };
+                  });
+            
+                addDoc(collection(db, "restaurantes"), {
                     name: restaurantName,
                     phoneNumbers: phoneNumbers,
                     address: address,
                     avgPrice: avgPrice,
                     mainCuisine: mainCuisine,
+                    category: category,
                     workingStartsAt: workingStartsAt,
                     workingEndsAt: endTime,
                     bookingStartsAt: reservStartTime,
                     bookingEndsAt: reservEndTime,
                     socialNetworkAccount: socialNetworkAccount,
-                    smokingRooms: parseInt(smokingRooms),
-                    nonSmokingRooms: parseInt(nonSmokingRooms),
                     description: description,
                     bookingAvailable: bookingAvailable,
                     maxAllowedGuests: parseFloat(maxAllowedGuests),
                     menu: menu,
                     location: new GeoPoint(lat, lng),
-                    roomTypes: roomTypes,
+                    roomTypes: roomTypesData,
+
                     thumbImage: thumbImage,
                     images: images,
-                    userId:user.user.uid
+                    userId: user.user.uid
                 });
                 Swal.fire({
                     position: 'top-end',
@@ -211,10 +229,12 @@ const CreateRestaurants = () => {
             })
         }
     }
+
     Date.prototype.addHours = function (h) {
         this.setHours(this.getHours() + h);
         return this;
     }
+
 
 
     return (
@@ -255,11 +275,41 @@ const CreateRestaurants = () => {
                 </div>
             ))}
             <TextField fullWidth id="outlined-basic" label="Adres" className='mb-4' variant="outlined" onChange={e => setAddress(e.target.value)} />
-            <TextField fullWidth id="outlined-basic" label="Orta qiymət" className='mb-4' variant="outlined" onChange={e => setAvaragePrice(e.target.value)} />
+            {/* <TextField fullWidth id="outlined-basic" label="Orta qiymət" className='mb-4' variant="outlined" onChange={e => setAvaragePrice(e.target.value)} /> */}
+            <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Orta qiymət</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    fullWidth label="Orta qiymət" className='mb-4' variant="outlined" onChange={e => setAvaragePrice(e.target.value)}
+                >
+                    <MenuItem value={"Cheap"}>Ucuz</MenuItem>
+                    <MenuItem value={"Medium"}>Orta</MenuItem>
+                    <MenuItem value={"Expensive"}>Bahalı</MenuItem>
+                </Select>
+            </FormControl>
             <TextField fullWidth id="outlined-basic" label="Əsas mətbəx" className='mb-4' variant="outlined" onChange={e => setMainCuisine(e.target.value)} />
+            <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Kateqoriya</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    fullWidth label="Kateqoriya" className='mb-4' variant="outlined" onChange={e => setCategory(e.target.value)}
+                >
+                    <MenuItem value={"Avropa mətbəxi"}>Avropa mətbəxi</MenuItem>
+                    <MenuItem value={"Slavyan mətbəxi"}>Slavyan mətbəxi</MenuItem>
+                    <MenuItem value={"Fransız mətbəxi"}>Fransız mətbəxi</MenuItem>
+                    <MenuItem value={"İtalyan mətbəxi"}>İtalyan mətbəxi</MenuItem>
+                    <MenuItem value={"Yapon mətbəxi"}>Yapon mətbəxi</MenuItem>
+                    <MenuItem value={"Coffee and snacks"}>Coffee and snacks</MenuItem>
+                    <MenuItem value={"Hind mətbəxi"}>Hind mətbəxi</MenuItem>
+                    <MenuItem value={"Milli mətbəx"}>Milli mətbəx</MenuItem>
+                    <MenuItem value={"Meksika mətbəxi"}>Meksika mətbəxi</MenuItem>
+                </Select>
+            </FormControl>
             <div className="workTime">
                 <div className="row align-items-center">
-                    <div className="col-lg-6">
+                    <div className="col-lg-12">
                         <p>İş saatları</p>
                         <TextField
                             id="time"
@@ -294,70 +344,12 @@ const CreateRestaurants = () => {
                             sx={{ width: 150 }}
                         />
                     </div>
-                    <div className="col-lg-6">
-                        <p>Rezerv saatları</p>
-                        <TextField
-                            id="time"
-                            label="Başlama saatı"
-                            type="time"
-                            className='startTime'
-                            onChange={(e) => (
-                                setReservStartTime(e.target.valueAsDate.addHours(-4))
-                            )}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            inputProps={{
-                                step: 300, // 5 min
-                            }}
-                            sx={{ width: 150 }}
-                        />
 
-                        <TextField
-                            id="time"
-                            label="Bitmə saatı"
-                            type="time"
-                            onChange={(e) => (
-                                setReservEndTime(e.target.valueAsDate.addHours(-4))
-                            )}
-
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            inputProps={{
-                                step: 300, // 5 min
-                            }}
-                            sx={{ width: 150 }}
-                        />
-                    </div>
                 </div>
             </div>
 
             <TextField fullWidth id="outlined-basic" label="Sosial şəbəkə hesabı" className='mb-4' variant="outlined" onChange={e => setSocialNetworkAccount(e.target.value)} />
-            <div className="cigarettesTrueFalse">
-                <div className="row">
-                    <div className="col-lg-6">
-                        <TextField fullWidth id="outlined-basic" label="Siqaret çəkilən otaqlar" className='mb-4' type="number"
-                            onChange={(event) => (
-                                event.target.value < 0
-                                    ? (event.target.value = 0)
-                                    : event.target.value,
-                                setSmokingRooms(event.target.value)
-                            )} variant="outlined" />
-                    </div>
-                    <div className="col-lg-6">
-                        <TextField fullWidth id="outlined-basic"
-                            onChange={(event) => (
-                                event.target.value < 0
-                                    ? (event.target.value = 0)
-                                    : event.target.value,
-                                setNonSmokingRooms(event.target.value)
-                            )}
-                            label="Siqaret çəkilməyən otaqlar" className='mb-4' type="number"
-                            variant="outlined" />
-                    </div>
-                </div>
-            </div>
+
             <TextField
                 id="outlined-multiline-static"
                 label="Təsvir"
@@ -368,15 +360,56 @@ const CreateRestaurants = () => {
             />
             <div className="row align-items-center">
                 <div className="col-lg-6">
-                    <span>Rezervasiya mövcuddur</span>
+                    <div className="row align-items-center">
+                        <div className="col-lg-6">
+                            <span>Rezervasiya mövcuddur</span>
+                        </div>
+                        <div className="col-lg-6 d-flex justify-content-end">
+                            <FormLabel component="legend">
+                                <Switch defaultChecked onChange={(e) => (
+                                    setBookingAvailable(e.target.checked)
+                                )} />
+                            </FormLabel>
+                        </div>
+                    </div>
                 </div>
-                <div className="col-lg-6 d-flex justify-content-end">
-                    <FormLabel component="legend">
-                        <Switch defaultChecked onChange={(e) => (
-                            setBookingAvailable(e.target.checked)
-                        )} />
-                    </FormLabel>
+                <div className={bookingAvailable ? "reserve col-lg-6" : "display"} >
+                    <p>Rezerv saatları</p>
+                    <TextField
+                        id="time"
+                        label="Başlama saatı"
+                        type="time"
+                        className='startTime'
+                        onChange={(e) => (
+                            setReservStartTime(e.target.valueAsDate.addHours(-4))
+                        )}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        inputProps={{
+                            step: 300, // 5 min
+                        }}
+                        sx={{ width: 150 }}
+                    />
+
+                    <TextField
+                        id="time"
+                        label="Bitmə saatı"
+                        type="time"
+                        onChange={(e) => (
+                            setReservEndTime(e.target.valueAsDate.addHours(-4))
+                        )}
+
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        inputProps={{
+                            step: 300, // 5 min
+                        }}
+                        sx={{ width: 150 }}
+                    />
                 </div>
+
 
             </div>
             <div className="profilePhoto">
@@ -425,47 +458,6 @@ const CreateRestaurants = () => {
 
 
                 </div>
-                {/* <ImageUploading
-          multiple
-          value={photos}
-          onChange={uploadImages}
-          maxNumber={maxNumber}
-          dataURLKey="data_url"
-        >
-          {({
-            imageList,
-            onImageUpload,
-            onImageRemoveAll,
-            onImageUpdate,
-            onImageRemove,
-            isDragging,
-            dragProps,
-          }) => (
-            <div className="upload__image-wrapper">
-              <button
-                style={isDragging ? { color: 'red' } : undefined}
-                onClick={onImageUpload}
-                {...dragProps}
-                className="uploadSinglePhoto"
-              >
-                Click or Drop here
-              </button>
-              &nbsp;
-              {images.map((image, index) => (
-                <div key={index} className="image-item">
-                  <img src={image} className="smallphoto" alt="" width="200" />
-                </div>
-              ))}
-
-              {imageList.map((image, index) => (
-                <div key={index} className="image-item">
-                  <img src={image['data_url']} className="smallphoto" alt="" width="200" />
-                </div>
-              ))}
-            </div>
-          )}
-        </ImageUploading> */}
-
 
             </div>
             <TextField fullWidth id="outlined-basic" label="İcazə verilən ən çox qonaq sayı" className='mb-4 mt-4' type="number"
@@ -477,13 +469,18 @@ const CreateRestaurants = () => {
                 )} variant="outlined" />
             {roomTypes.map((singleRoom, index) => (
                 <div key={index} className="row align-items-center justify-content-center">
-                    <div className="col-lg-8">
+                    <div className="col-lg-4">
                         <div className="first-division">
-                            <TextField fullWidth id="outlined-basic" onChange={(e) => roomChange(e, index)} label="Otaq növləri" variant="outlined" />
+                            <TextField fullWidth id={`room-type-${index}`} onChange={(e) => roomChange(e, index)} label="Otaq növləri" variant="outlined" />
+                        </div>
+                    </div>
+                    <div className="col-lg-4">
+                        <div className="second-division">
+                            <TextField fullWidth id={`room-capacity-${index}`} onChange={(e) => capacityChange(e, index)} label="Otaq sayı" variant="outlined" />
                         </div>
                     </div>
                     <div className="col-lg-2">
-                        <div className="second-division">
+                        <div className="third-division">
                             {roomTypes.length !== 1 && (
                                 <button
                                     type="button"
@@ -508,6 +505,7 @@ const CreateRestaurants = () => {
                     </div>
                 </div>
             ))}
+
             <div className="nameAndPassword">
                 <div className="row">
                     <div className="col-lg-6">

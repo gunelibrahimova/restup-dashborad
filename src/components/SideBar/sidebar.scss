@@ -10,8 +10,10 @@
 
         .product {
             list-style: none;
-            margin: 0;
-            padding: 20px;
+            // margin: 0;
+            padding: 20px 10px;
+            width: 100%;
+            margin: auto;
             text-align: center;
             font-size: 25px;
             font-family: "DM San";
@@ -24,8 +26,10 @@
                 color: black;
                 background-color: white;
                 border-radius: 10px;
-                padding: 10px 90px;
+                padding: 10px 80px;
                 width: 100%;
+                margin: auto;
+                display: block;
                 transition: 0.3s ease-in-out;
                 cursor: pointer;
 
@@ -120,6 +124,7 @@
     #sideBar {
         background-color: #25252e;
         // height: 100vh;
+        position: static;
         // position: fixed;
         ul{
             .product{
@@ -133,7 +138,11 @@
 }
 
 // X-Large devices (large desktops, 1200px and up)
-@media (max-width: 1200px) {}
+@media (max-width: 1200px) {
+    #sideBar{
+        position: static;
+    }
+}
 
 // XX-Large devices (larger desktops, 1400px and up)
 @media (max-width: 1400px) {}
