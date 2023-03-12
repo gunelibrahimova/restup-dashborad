@@ -180,7 +180,7 @@ const CreateRestaurants = () => {
                     };
                   });
             
-                addDoc(collection(db, "restaurantes"), {
+                addDoc(collection(db, "restaurants"), {
                     name: restaurantName,
                     phoneNumbers: phoneNumbers,
                     address: address,

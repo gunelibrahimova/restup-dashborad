@@ -156,7 +156,7 @@ const UpdateRestaurants = () => {
   };
 
   const addData = async () => {
-    const docRef = doc(db, "restaurantes", locationn.state.id);
+    const docRef = doc(db, "restaurants", locationn.state.id);
     const docSnap = await getDoc(docRef)
     const data = docSnap.data()
 
@@ -217,7 +217,7 @@ const UpdateRestaurants = () => {
 
   const updateUser = async () => {
     try {
-      const docRef = doc(db, "restaurantes", locationn.state.id);
+      const docRef = doc(db, "restaurants", locationn.state.id);
       const docSnap = await getDoc(docRef)
       const data = docSnap.data()
 
